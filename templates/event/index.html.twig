@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event index{% endblock %}
+
+{% block body %}
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Event index</h1>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>All_day</th>
+                        <th>StartAt</th>
+                        <th>EndAt</th>
+                        <th>Background_color</th>
+                        <th>Border_color</th>
+                        <th>Text_color</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for event in events %}
+                        <tr>
+                            <td>{{ event.id }}</td>
+                            <td>{{ event.title }}</td>
+                            <td>{{ event.description }}</td>
+                            <td>
+                                {{ event.allDay ? 'Yes' : 'No' }}
+{#                                <div class="custom-control custom-switch">#}
+{#                                    <input type="checkbox" class="custom-control-input" id="customSwitch1" checked="">#}
+{#                                    <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>#}
+{#                                </div>#}
+                            </td>
+                            <td>{{ event.startAt ? event.startAt|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>{{ event.endAt ? event.endAt|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>{{ event.backgroundColor }}</td>
+                            <td>{{ event.borderColor }}</td>
+                            <td>{{ event.textColor }}</td>
+                            <td>
+                                <a href="{{ path('event_show', {'id': event.id}) }}">show</a>
+                                <a href="{{ path('event_edit', {'id': event.id}) }}">edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="10">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <a href="{{ path('event_new') }}">Create new</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

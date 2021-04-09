@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Event{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{#    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css">#}
+{#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css">#}
+    <style>
+        #pik{
+            width: 200px!important;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <h1>Create new Event</h1>
+
+                {{ include('event/_form.html.twig') }}
+
+                <a href="{{ path('event_index') }}">back to list</a>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+{#    {{ parent() }}#}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>#}
+{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>#}
+    <script>
+
+        /**
+         * @todo not working during the insert : ERROR This value is not valid..
+         * https://getdatepicker.com/4/
+         * http://jsfiddle.net/8tsCt/166/
+         */
+        // $('#event_startAt,#event_endAt').datetimepicker({
+        //     // format: 'LT',
+        //     format: 'DD/MM/YYYY HH:mm:ss',
+        //     // format: 'd-m-Y HH:ii:ss',
+        //     defaultDate: "now",
+        //     // icons: {
+        //     //     time: "fa fa-clock-o",
+        //     //     date: "fa fa-calendar",
+        //     //     up: "fa fa-arrow-up",
+        //     //     down: "fa fa-arrow-down"
+        //     // }
+        //     // locale: 'fr',
+        // });
+
+        /**
+         * @todo get datetimePicker Value .
+         */
+        // $('#event_endAt').click(function () {
+        //     alert($(this).val());
+        // });
+
+
+    </script>
+{% endblock %}

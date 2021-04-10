@@ -7,8 +7,9 @@ WORKDIR "/application"
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Install selected extensions and other stuff
+# pour la creation des image : php7.4-gd
 RUN apt-get update \
-    && apt-get -y --no-install-recommends install  php7.4-mysql php7.4-xdebug php7.4-yaml \
+    && apt-get -y --no-install-recommends install  php7.4-mysql php7.4-xdebug php7.4-yaml php7.4-gd \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Install git

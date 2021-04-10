@@ -103,6 +103,9 @@
     "nikic/php-parser": {
         "version": "v4.10.4"
     },
+    "ourcodeworld/name-that-color": {
+        "version": "dev-master"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },

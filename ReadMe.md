@@ -6,3 +6,8 @@ https://stackoverflow.com/a/26311354
 ###Creating a Date Picker Field
 
 https://symfonycasts.com/screencast/symfony3-forms/date-picker-field#html5-versus-datepicker-fight
+
+
+### converter hex to string name color 
+https://ourcodeworld.co/articles/read/784/how-to-retrieve-the-human-name-of-a-color-by-its-hex-code-in-php
+composer require ourcodeworld/name-that-color

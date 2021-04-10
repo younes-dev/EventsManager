@@ -1,34 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Event index{% endblock %}
+{% block title %}Event List{% endblock %}
 
 {% block body %}
+    <style>
+        .dot {
+            height: 60px;
+            width: 60px;
+            /*background-color: #bbb;*/
+            border-radius: 50%;
+            font-size: small;
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            margin: auto;
+        }
 
+    </style>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <h1>Event index</h1>
+                {% set val = "#161313" in blackColors ? 'black' : 'not black' %}
+{{ val }}
 
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>All_day</th>
-                        <th>StartAt</th>
-                        <th>EndAt</th>
-                        <th>Background_color</th>
-                        <th>Border_color</th>
-                        <th>Text_color</th>
-                        <th>actions</th>
+{#                        <th>Id</th>#}
+                        <th style="width: 150px;">Title</th>
+                        <th style="width: 150px;">Description</th>
+                        <th style="width: 150px;">All Day</th>
+                        <th style="width: 150px;">StartAt</th>
+                        <th style="width: 150px;">EndAt</th>
+                        <th style="width: 60px;">BgColor</th>
+                        <th style="width: 60px;padding: 10px;">BrColor</th>
+                        <th style="width: 65px;padding: 10px;">TxColor</th>
+                        <th style="width: 150px;padding: 10px;">actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for event in events %}
                         <tr>
-                            <td>{{ event.id }}</td>
+{#                            <td>{{ event.id }}</td>#}
                             <td>{{ event.title }}</td>
                             <td>{{ event.description }}</td>
                             <td>
@@ -40,9 +55,18 @@
                             </td>
                             <td>{{ event.startAt ? event.startAt|date('Y-m-d H:i:s') : '' }}</td>
                             <td>{{ event.endAt ? event.endAt|date('Y-m-d H:i:s') : '' }}</td>
-                            <td>{{ event.backgroundColor }}</td>
-                            <td>{{ event.borderColor }}</td>
-                            <td>{{ event.textColor }}</td>
+                            <td>
+                                {% set bg = event.backgroundColor in blackColors ? 'black' : 'not black' %}
+                                <span class="dot" style="background-color: {{ event.backgroundColor }};color: {{ bg is same as("black") ? "white" : "black" }}">{{ event.backgroundColor }}</span>
+                            </td>
+                            <td>
+                                {% set border = event.borderColor in blackColors ? 'black' : 'not black' %}
+                                <span class="dot" style="background-color: {{ event.borderColor }};color: {{ border is same as("black") ? "white" : "black" }}">{{ event.borderColor }}</span>
+                            </td>
+                            <td>
+                                {% set text = event.textColor in blackColors ? 'black' : 'not black' %}
+                                <span class="dot" style="background-color: {{ event.textColor }};color: {{ text is same as("black") ? "white" : "black" }}">{{ event.textColor }}</span>
+                            </td>
                             <td>
                                 <a href="{{ path('event_show', {'id': event.id}) }}">show</a>
                                 <a href="{{ path('event_edit', {'id': event.id}) }}">edit</a>

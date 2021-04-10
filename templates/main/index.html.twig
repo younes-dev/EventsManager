@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
+    <div class="container_ mt-5">
         <div class="row">
         <div class="col-md-12">
             <div id="calender">
@@ -33,7 +33,7 @@
         window.onload = () => {
             let calendarEl = document.getElementById('calender');
             let calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth', // dayGridMonth // dayGridWeek // dayGridDay
+                initialView: 'timeGridWeek', // dayGridMonth // dayGridWeek // dayGridDay // timeGridWeek
                  local:'fr',
                  timeZone:'Europe/Paris',
                 headerToolbar: {

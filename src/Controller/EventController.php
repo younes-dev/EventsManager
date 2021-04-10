@@ -22,8 +22,13 @@ class EventController extends AbstractController
      */
     public function index(EventRepository $eventRepository): Response
     {
+        $blackColors = [
+            "#000000", "#080808", "#101010", "#181818", "#202020", "#282828", "#303030",
+            "#383838", "#404040", "#484848", "#505050", "#585858", "#606060", "#686868","#161313"
+        ];
         return $this->render('event/index.html.twig', [
             'events' => $eventRepository->findAll(),
+            'blackColors' => $blackColors
         ]);
     }
 

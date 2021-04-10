@@ -48,3 +48,11 @@ phpmd:  ## Lance l'analyseeur du code phpmd
 
 phpmdHelp:  ## afficher le help de l'analyseeur du code phpmd avec l'option -h
 	vendor/phpmd/phpmd/src/bin/phpmd -h
+
+nginxReload:  ## afficher le help de l'analyseeur du code phpmd avec l'option -h
+	docker exec -it EventsManager-webserver nginx -s reload
+	#docker exec EventsManager-webserver nginx -s reload
+	#docker restart EventsManager-webserver
+
+
+

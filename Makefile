@@ -8,8 +8,14 @@ vendor:composer.json ## installé les dépendances
 help: ## afficher les description des commandes de makeFile
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-10s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
+build:  ## construire les conteneurs docker
+	docker-compose up --build
+
 up:  ## construire les conteneurs docker
 	docker-compose up
+
+stop:  ## éteindre les conteneurs docker
+	docker-compose stop
 
 down:  ## éteindre les conteneurs docker
 	docker-compose down

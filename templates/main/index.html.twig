@@ -8,43 +8,165 @@
             width: 80%;
             margin: auto;
         }
+
+        .custom-select{
+            background-color: #91aaba;
+            background-size:10% 50%;
+            color:#FAFAFA;
+            border-radius: 0px 0px 0px;
+            height:30px;
+            width:100%;
+            border:0px;
+        }
     </style>
 {#    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">#}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.6.0/main.min.css">
 
 {% endblock %}
 
 {% block body %}
-    <div class="container_ mt-5">
+
+
+{#    <div id='top'>#}
+{#        Locales:#}
+{#        <select id='locale-selector'></select>#}
+{#    </div>#}
+
+    <div class="container mt-5">
         <div class="row">
-        <div class="col-md-12">
-            <div id="calender">
+            <div class="col-md-2 mb-3">
+                <div id='top'>
+                    <label for='locale-selector'>Locales :</label>
+                        <select class="custom-select my-1 mr-sm-2" id='locale-selector'>
+                    </select>
+                </div>
             </div>
         </div>
+           <div class="row">
+            <div class="col-md-12">
+                <div id="calender">
+                </div>
+            </div>
         </div>
     </div>
+
 
 {% endblock %}
 
 {% block javascripts %}
-
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.6.0/locales-all.js"></script>
     <script>
-
-        // document.addEventListener('DOMContentLoaded', function() {
+        {#https://codepen.io/shen-yang-tw/pen/rgdNwJ#}
+        {#https://codepen.io/shen-yang-tw/pen/rgdNwJ#}
+        {#https://stackoverflow.com/q/61514747#}
         window.onload = () => {
+            var initialLocaleCode = 'en';
+            var localeSelectorEl = document.getElementById('locale-selector');
             let calendarEl = document.getElementById('calender');
             let calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'timeGridWeek', // dayGridMonth // dayGridWeek // dayGridDay // timeGridWeek
-                 local:'fr',
-                 timeZone:'Europe/Paris',
-                headerToolbar: {
-                    start: 'prev,next today',
-                    center: 'title',
-                    end: 'dayGridMonth,dayGridWeek,dayGridDay',
+                // initialView: 'timeGridWeek', // dayGridMonth // dayGridWeek // dayGridDay // timeGridWeek
+                // defaultView: 'listWeek', // default view in the of th open calender
+                // defaultView: 'timeGridWeek',
+                // local: 'fr', // local language
+                local: initialLocaleCode, // local language
+                firstDay: 1, // start from monday
+
+                // customize the button names,
+                views: {
+                    timeGridDay: { buttonText: 'Jour' },
+                    timeGridWeek: { buttonText: 'Semaine' },
+                    dayGridMonth: { buttonText: 'Mois' },
+                    listWeek: { buttonText: 'Liste' }
                 },
-                // timeZone: 'UTC',
-                events: {{ data|raw }}
+
+                headerToolbar: {
+                    start: 'prev,next today', // left menu options
+                    center: 'title',          // center menu options
+                    // end: 'dayGridMonth,dayGridWeek,dayGridDay,timeGridDay',
+                          // dayGridMonth,dayGridWeek,dayGridDay,timeGridWeek,timeGridDay,listDay,listWeek,listMonth
+                     end: 'timeGridDay,timeGridWeek,dayGridMonth,listMonth' // right menu options
+                    // right: 'listDay,listWeek,listMonth' // the same of end option above
+
+                },
+                scrollTime: '08:00:00', // initial range of time from 00:00
+                minTime:'08:00:00',
+                maxTime:'18:00:00',
+                slotLabelInterval:"01:00",
+                slotLabelFormat: [   // date format display in range
+                    {
+                        hour: '2-digit',
+                        // minute: '2-digit',
+                        //second: '2-digit',
+                        // omitZeroMinute: false,
+                    },
+                ],
+                // views: {
+                //     timelineThreeDays: {
+                //         type: 'timeline',
+                //         slotLabelFormat: [
+                //             'ddd D/M',
+                //             'H:mm'
+                //         ],
+                //         columnFormat: 'ddd D.M',
+                //         duration: {days: 3}
+                //     }
+                // },
+
+                events: {{ data|raw }},
+                editable: true,
+                eventResizableFromStart: true,
+
             });
+
+            calendar.on('eventChange', (e) => {
+                let url = `/api/${e.event.id}/edit`
+
+//id
+//title
+//description
+//all_day
+//startAt
+//endAt
+//background_color
+//border_color
+//text_color
+                let donnees = {
+                    "title": e.event.title,
+                    "description": e.event.extendedProps.description,
+                    "start": e.event.start,
+                    "end": e.event.end,
+                    "backgroundColor": e.event.backgroundColor,
+                    "borderColor": e.event.borderColor,
+                    "textColor": e.event.textColor,
+                    "allDay": e.event.allDay
+                }
+                console.log(donnees);
+                //console.log(e);
+
+                let xhr = new XMLHttpRequest
+                xhr.open("PUT", url)
+                xhr.send(JSON.stringify(donnees))
+            })
+
+
             calendar.render();
+
+            // build the locale selector's options
+                calendar.getAvailableLocaleCodes().forEach(function(localeCode) {
+                var optionEl = document.createElement('option');
+                optionEl.value = localeCode;
+                optionEl.selected = localeCode === initialLocaleCode;
+                optionEl.innerText = localeCode;
+                localeSelectorEl.appendChild(optionEl);
+                // console.table(localeSelectorEl)
+            });
+
+            // when the selected option changes, dynamically change the calendar option
+            localeSelectorEl.addEventListener('change', function() {
+                if (this.value) {
+                    calendar.setOption('locale', this.value);
+                }
+            });
         };
 
     </script>

@@ -5,8 +5,9 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Repository\EventRepository;
 use App\Service\ColorInterpreterService;
-use ourcodeworld\NameThatColor\ColorInterpreter;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -88,6 +89,77 @@ class MainController extends AbstractController
 
     }
 
+    /**
+     * @Route("/api/{id}/edit", name="api_event_edit", methods={"PUT"})
+     * @throws \Exception
+     */
+    public function createOrUpdateEvent(?Event $event, Request $request): Response
+    {
+        // On récupère les données
+        $data = json_decode($request->getContent());
+//dd($data);
+        if(
+            isset($data->title) && !empty($data->title) &&
+            isset($data->start) && !empty($data->start) &&
+            isset($data->description) && !empty($data->description) &&
+            isset($data->backgroundColor) && !empty($data->backgroundColor) &&
+            isset($data->borderColor) && !empty($data->borderColor) &&
+            isset($data->textColor) && !empty($data->textColor)
+        ){
+            // Les données sont complètes
+            // On initialise un code
+            $code = 200;
+
+            // On vérifie si l'id existe
+            if(!$event){
+                // On instancie un rendez-vous
+                $event = new Event();
+
+                // On change le code
+                $code = 201;
+            }
+
+            // On hydrate l'objet avec les données
+            $event->setTitle($data->title);
+            $event->setDescription($data->description);
+            $event->setStartAt(new DateTime($data->start));
+            if($data->allDay){
+                $event->setEndAt(new DateTime($data->start));
+            }else{
+                $event->setEndAt(new DateTime($data->end));
+            }
+            $event->setAllDay($data->allDay);
+            $event->setBackgroundColor($data->backgroundColor);
+            $event->setBorderColor($data->borderColor);
+            $event->setTextColor($data->textColor);
+
+            $em = $this->getDoctrine()->getManager();
+//            dd($event);
+            $em->persist($event);
+            $em->flush();
+
+            // On retourne le code
+            return new Response('Ok', $code);
+        }else{
+            // Les données sont incomplètes
+        return new Response('Données incomplètes '.(json_encode($data, JSON_PRETTY_PRINT)), 404);
+        }
+
+
+        return $this->render('api/index.html.twig', [
+            'controller_name' => 'ApiController',
+        ]);
+    }
+
+    public function foo($bar){
+
+        if ($bar == 0) {
+            echo 0;
+        }
+        echo "default";
+
+
+    }
 
 
 

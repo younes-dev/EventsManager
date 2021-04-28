@@ -6,6 +6,7 @@ use App\Repository\EventRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Boolean;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EventRepository::class)
@@ -36,6 +37,11 @@ class Event
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Date()
+     * @Assert\Expression(
+     *     "this.getStartAt() < this.getEndAt()",
+     *     message="La date fin ne doit pas être antérieure à la date début"
+     * )
      */
     private ?\DateTimeInterface $startAt;
 
